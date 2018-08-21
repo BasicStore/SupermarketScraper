@@ -12,11 +12,11 @@
     		<artifactId>htmlunit</artifactId>
     		<version>2.19</version>
 		</dependency>
-		<dependency>  
-  			<groupId>com.fasterxml.jackson.core</groupId>
-  			<artifactId>jackson-databind</artifactId>
-			<version>2.7.0</version>
-		</dependency>
+		<dependency>
+        	<groupId>org.codehaus.jackson</groupId>
+        	<artifactId>jackson-mapper-asl</artifactId>
+        	<version>1.9.10</version>
+    	</dependency>
   </dependencies>
   
 </project>

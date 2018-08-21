@@ -4,40 +4,31 @@ import java.util.ArrayList;
 
 public class ProductGroup implements IProductGroup {
 	
-	private List<AbstractProduct> productList = new ArrayList<AbstractProduct>();
-	private String gross;
-	private String vat;
+	private List<AbstractProduct> results = new ArrayList<AbstractProduct>();
+	private Total total;
 	
-	
-	public void addProduct(AbstractProduct product) {
-		
-		// do calculate
-		
-		
-		// updateTotalInfo()
-		
+	public Total getTotal() {
+		return total;
 	}
 	
 	
-	private void updateTotalInfo() {
+	private void calculateTotalInfo() {
 	
+		// TODO UPDATE TOTAL info ------->  gross + vat
+
 		
+		total = new Total("5.00", "0.83");
 	}
 
-
-	public List<AbstractProduct> getProductList() {
-		return productList;
-	}
-
-
-	public String getGross() {
-		return gross;
-	}
-
-
-	public String getVat() {
-		return vat;
+	
+	public List<AbstractProduct> getResults() {
+		return results;
 	}
 	
 
+	public void setResults(List<AbstractProduct> results) {
+		this.results = results;
+		calculateTotalInfo();
+	}
+		
 }

@@ -7,7 +7,7 @@ public abstract class AbstractProduct {
 	protected String description;
 	
 	
-	public AbstractProduct(String title, String unitPrice, String description) {
+	public AbstractProduct(String title, String description) {
 		this.title = title;
 		this.unitPrice = unitPrice;
 		this.description= description;
@@ -20,14 +20,6 @@ public abstract class AbstractProduct {
 	
 	public void setTitle(String title) {
 		this.title = title;
-	}
-	
-	public String getUnitPrice() {
-		return unitPrice;
-	}
-	
-	public void setUnitPrice(String unitPrice) {
-		this.unitPrice = unitPrice;
 	}
 	
 	public String getDescription() {

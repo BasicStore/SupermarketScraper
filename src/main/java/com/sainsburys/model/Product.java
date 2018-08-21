@@ -1,6 +1,6 @@
 package com.sainsburys.model;
 
-public class Product extends AbstractProduct {
+public class Product extends CoreProduct {
 
 	protected String kCalPer100g;
 	

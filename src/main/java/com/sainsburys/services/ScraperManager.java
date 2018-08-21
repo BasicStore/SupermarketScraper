@@ -11,13 +11,14 @@ public class ScraperManager implements IScraperManager {
 
 	public String scrapeProductsToJson() {
 		List<IProductGroup> prdGrpList = new ArrayList<IProductGroup>();
-		for (ScraperDefinition def : ScraperDefinition.BERRIES_CHERRIES_CURRANTS.values()) {
+		for (ScraperDefinition def : ScraperDefinition.values()) {
 			
 			IScraperJob job = initScraperJob(def);
 			IProductGroup prdGrp = job.generateProductGroup();
 			prdGrpList.add(prdGrp);
 		}
 		
+		//return "JSON GOES HERE";
 		return fetchOutput(prdGrpList);
 	}
 	

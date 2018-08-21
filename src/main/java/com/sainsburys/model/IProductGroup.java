@@ -1,9 +1,6 @@
-/**
- * 
- */
 package com.sainsburys.model;
-
 import java.util.List;
+import com.sainsburys.model.Total;
 
 /**
  * @author Paul
@@ -11,12 +8,10 @@ import java.util.List;
  */
 public interface IProductGroup {
 
-	void addProduct(AbstractProduct product);
-	
-	List<AbstractProduct> getProductList();
+	List<AbstractProduct> getResults();
 
-	String getGross();
+	Total getTotal();
 
-	String getVat();
+	void setResults(List<AbstractProduct> results);
 	
 }
