@@ -21,15 +21,20 @@ public class ApplicationMain {
 	 */
 	public ApplicationMain() {
 		IScraperManager scraper  = new ScraperManager(); 
-		List<IProductGroup> prdGrpList = scraper.scrapeProducts();
-		String output = scraper.fetchOutput(prdGrpList, ScraperManager.JSON_OUTPUT);
-		System.out.println("JSON OUTPUT:\n\n" + output);
+		
+		try {
+			List<IProductGroup> prdGrpList = scraper.scrapeProducts();
+			String output = scraper.fetchOutput(prdGrpList, ScraperManager.JSON_OUTPUT);
+			System.out.println("JSON OUTPUT:\n\n" + output);
+		} catch(Exception e) {
+			System.out.println("Error scraping page: " + e.getMessage() + "\n");
+			e.printStackTrace();
+		}
 	}
 	
 	
 	public static void main(String[] args) {
 		new ApplicationMain();
 	}
-
 	
 }
