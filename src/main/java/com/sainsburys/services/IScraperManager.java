@@ -8,6 +8,6 @@ public interface IScraperManager {
 		
 	List<IProductGroup> scrapeProducts(); 
 	
-	String fetchOutput(List<IProductGroup> prdGrpList);
+	String fetchOutput(List<IProductGroup> prdGrpList, int outputFormat);
 		
 }

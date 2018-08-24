@@ -4,6 +4,6 @@ import com.sainsburys.model.IProductGroup;
 
 public interface IScraperJob {
 
-	IProductGroup generateProductGroup();
+	IProductGroup scrapeProducts();
 	
 }

@@ -10,24 +10,25 @@ import com.sainsburys.services.ScraperManager;
 
 
 /**
+ * Class to invoke the scraper, and then output the results in JSON format
  * @author Paul
  *
  */
 public class ApplicationMain {
 	
+	/**
+	 * Constructor to invoke the scraper, and then output the results in JSON format
+	 */
 	public ApplicationMain() {
 		IScraperManager scraper  = new ScraperManager(); 
 		List<IProductGroup> prdGrpList = scraper.scrapeProducts();
-		String output = scraper.fetchOutput(prdGrpList);
+		String output = scraper.fetchOutput(prdGrpList, ScraperManager.JSON_OUTPUT);
 		System.out.println("JSON OUTPUT:\n\n" + output);
 	}
 	
 	
 	public static void main(String[] args) {
 		new ApplicationMain();
-		
-//		BigDecimal tot = new BigDecimal("4.00").add(new BigDecimal("7.00")); 
-//		System.out.println("Total = " + tot.toString());
 	}
 
 	

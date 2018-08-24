@@ -3,6 +3,12 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+
+/**
+ * Class representing a group of products, together with total price information
+ * @author Paul
+ *
+ */
 public class ProductGroup implements IProductGroup {
 	
 	private List<AbstractProduct> results = new ArrayList<AbstractProduct>();

@@ -7,9 +7,14 @@ import com.sainsburys.output.IOutputJob;
 import com.sainsburys.output.JsonOutputJob;
 import com.sainsburys.scraper.*;
 
-public class ScraperManager implements IScraperManager {
+/**
+ * Scraper manager to scrape all ScraperDefinition product areas 
+ * @author Paul
+ */
+public class ScraperManager implements IScraperManager {    
 
-	// TODO ********************  need Singleton class to get properties:  isJson
+	public static final int JSON_OUTPUT = 1;
+	public static final int XML_OUTPUT = 2;
 	
 	public List<IProductGroup> scrapeProducts() {
 		
@@ -17,8 +22,8 @@ public class ScraperManager implements IScraperManager {
 		List<IProductGroup> prdGrpList = new ArrayList<IProductGroup>();   
 		for (ScraperDefinition def : ScraperDefinition.values()) {
 			
-			IScraperJob job = initScraperJob(def);
-			IProductGroup prdGrp = job.generateProductGroup();
+			IScraperJob job = createScraperJob(def);
+			IProductGroup prdGrp = job.scrapeProducts();
 			prdGrpList.add(prdGrp);
 		}
 		
@@ -26,13 +31,13 @@ public class ScraperManager implements IScraperManager {
 	}
 	
 	
-	
-	private IScraperJob initScraperJob(ScraperDefinition def) {
+	// creates the particular scraper 
+	private IScraperJob createScraperJob(ScraperDefinition def) {
 		
 		int scraperId = def.getId();
         String monthString;
         switch (scraperId) {
-            case 1:  return new BerriesCherriesCurrantsScraperJob();      // TODO ********************    IScraperJob ScraperJobFactory
+            case 1:  return new BerriesCherriesCurrantsScraperJob();     
         }	
 		
 		return null;
@@ -40,10 +45,15 @@ public class ScraperManager implements IScraperManager {
         
         
 	
-	public String fetchOutput(List<IProductGroup> prdGrpList) {
+	/**
+	 * Fetches the previously scraped data in the specified format
+	 * @param prdGrpList
+	 * @param outputFormat - the output string format, such as JSON or XML
+	 * @return
+	 */
+	public String fetchOutput(List<IProductGroup> prdGrpList, int outputFormat) {
 		
-		boolean isJson = true; // TODO ********************  
-		IOutputJob job = new JsonOutputJob();  // TODO ********************    IOutputJob OutputJobFactory
+		IOutputJob job = createOutputJob(outputFormat);
 		String output = "";
 		for (IProductGroup grp : prdGrpList) {
 			output += job.getOutput(grp) + "\n";
@@ -53,9 +63,13 @@ public class ScraperManager implements IScraperManager {
 	}
 	
 	
-	public String doTest() {
-		return "47";
+	private IOutputJob createOutputJob(int outputFormat) {
+		
+		switch (outputFormat) {
+        	case JSON_OUTPUT:  return new JsonOutputJob();     
+        	case XML_OUTPUT:   return null;
+        	default: return new JsonOutputJob();
+		}
 	}
-	
-	
+		
 }

@@ -2,6 +2,12 @@ package com.sainsburys.model;
 import java.math.BigDecimal;
 import org.apache.commons.lang3.StringUtils;
 
+
+/**
+ * Class representing a any type of product with price information
+ * @author Paul
+ *
+ */
 public class CoreProduct extends AbstractProduct {
 	
 	private BigDecimal unitPrice;
@@ -27,7 +33,7 @@ public class CoreProduct extends AbstractProduct {
 	public static BigDecimal getPrice(String priceStr) {
 		
 		if (StringUtils.isBlank(priceStr)) {
-			// TODO throw new exception
+			return new BigDecimal("0.00");
 		}
 		
 		return new BigDecimal(priceStr.substring(1)).setScale(2);

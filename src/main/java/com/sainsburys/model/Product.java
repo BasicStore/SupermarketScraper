@@ -1,6 +1,11 @@
 package com.sainsburys.model;
 import java.math.BigDecimal;
 
+/**
+ * Class representing a grocery product
+ * @author Paul
+ *
+ */
 public class Product extends CoreProduct {
 
 	protected String kCalPer100g;

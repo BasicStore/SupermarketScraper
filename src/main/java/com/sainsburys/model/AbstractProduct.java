@@ -1,5 +1,9 @@
 package com.sainsburys.model;
 
+/**
+ * Generic class representing a product 
+ * @author Paul
+ */
 public abstract class AbstractProduct {
 
 	protected String title;
