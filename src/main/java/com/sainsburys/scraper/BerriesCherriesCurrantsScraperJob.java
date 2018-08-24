@@ -64,7 +64,8 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 	 * @param page - the html page  
 	 * @param List<AbstractProduct> - the cumulative product list for all apges, to which products scraped from this page should be added
 	 */
-	public void scrapeProductsOnThisPage(WebClient client, HtmlPage page, List<AbstractProduct> productList) throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException {
+	public void scrapeProductsOnThisPage(WebClient client, HtmlPage page, List<AbstractProduct> productList) throws ProductScraperException, FailingHttpStatusCodeException, 
+																													MalformedURLException, IOException {
 			
 		List<HtmlElement> items = (List<HtmlElement>) page.getByXPath(".//div[@class='productNameAndPromotions']");
 		
@@ -140,7 +141,8 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 	
 	
 	
-	private HtmlElement getPageContentNode(WebClient client, HtmlElement item) throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException {
+	private HtmlElement getPageContentNode(WebClient client, HtmlElement item) throws ProductScraperException, FailingHttpStatusCodeException, 
+																					  MalformedURLException, IOException {
 		String itemUrl = ((HtmlAnchor) item.getFirstByXPath(".//h3//a")).getHrefAttribute();
 		int index = itemUrl.indexOf("shop");
 		String productUrl = SAINSBURYS_URL_BASE + itemUrl.substring(index);
