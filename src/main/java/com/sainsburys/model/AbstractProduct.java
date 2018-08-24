@@ -3,13 +3,11 @@ package com.sainsburys.model;
 public abstract class AbstractProduct {
 
 	protected String title;
-	protected String unitPrice;
 	protected String description;
 	
 	
 	public AbstractProduct(String title, String description) {
 		this.title = title;
-		this.unitPrice = unitPrice;
 		this.description= description;
 	}
 	

@@ -1,11 +1,13 @@
 package com.sainsburys.services;
+import java.util.List;
+
+import com.sainsburys.model.IProductGroup;
 import com.sainsburys.model.ScraperDefinition;
 
 public interface IScraperManager {
 		
-	public String scrapeProductsToJson(); 
+	List<IProductGroup> scrapeProducts(); 
 	
-	
-	
-	
+	String fetchOutput(List<IProductGroup> prdGrpList);
+		
 }

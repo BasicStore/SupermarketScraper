@@ -1,5 +1,6 @@
 package com.sainsburys.model;
 import java.util.List;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class ProductGroup implements IProductGroup {
@@ -13,11 +14,20 @@ public class ProductGroup implements IProductGroup {
 	
 	
 	private void calculateTotalInfo() {
-	
-		// TODO UPDATE TOTAL info ------->  gross + vat
-
+		BigDecimal tot = new BigDecimal("0.00");
 		
-		total = new Total("5.00", "0.83");
+		for (AbstractProduct aprd :results) {
+			CoreProduct prod = (CoreProduct)aprd;
+			
+			
+			String priceStr = prod.getUnitPrice();
+			BigDecimal priaceBD = CoreProduct.getPrice(prod.getUnitPrice());
+			
+			tot = tot.add(CoreProduct.getPrice(prod.getUnitPrice()));
+		}
+		
+		String totalStr = Total.CURRENCY + tot.setScale(2).toString();
+		total = new Total(totalStr, Total.VAT);
 	}
 
 	

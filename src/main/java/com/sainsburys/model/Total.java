@@ -2,6 +2,9 @@ package com.sainsburys.model;
 
 public class Total {
 
+	public static final String CURRENCY = "£";
+	public static final String VAT = "0.83";
+	
 	private String gross;
 	private String vat;
 	
@@ -15,7 +18,7 @@ public class Total {
 	}
 
 	public String getVat() {
-		return vat;
+		return vat + "%";
 	}			
 	
 }

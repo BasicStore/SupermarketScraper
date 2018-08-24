@@ -4,13 +4,17 @@ import java.util.List;
 import com.sainsburys.model.IProductGroup;
 import com.sainsburys.model.ScraperDefinition;
 import com.sainsburys.output.IOutputJob;
-import com.sainsburys.output.OutputJob;
+import com.sainsburys.output.JsonOutputJob;
 import com.sainsburys.scraper.*;
 
 public class ScraperManager implements IScraperManager {
 
-	public String scrapeProductsToJson() {
-		List<IProductGroup> prdGrpList = new ArrayList<IProductGroup>();
+	// TODO ********************  need Singleton class to get properties:  isJson
+	
+	public List<IProductGroup> scrapeProducts() {
+		
+		System.out.println("Scraping the products. This will take a few moments.......\n\n");
+		List<IProductGroup> prdGrpList = new ArrayList<IProductGroup>();   
 		for (ScraperDefinition def : ScraperDefinition.values()) {
 			
 			IScraperJob job = initScraperJob(def);
@@ -18,8 +22,7 @@ public class ScraperManager implements IScraperManager {
 			prdGrpList.add(prdGrp);
 		}
 		
-		//return "JSON GOES HERE";
-		return fetchOutput(prdGrpList);
+		return prdGrpList;
 	}
 	
 	
@@ -29,7 +32,7 @@ public class ScraperManager implements IScraperManager {
 		int scraperId = def.getId();
         String monthString;
         switch (scraperId) {
-            case 1:  return new BerriesCherriesCurrantsScraperJob();
+            case 1:  return new BerriesCherriesCurrantsScraperJob();      // TODO ********************    IScraperJob ScraperJobFactory
         }	
 		
 		return null;
@@ -37,16 +40,21 @@ public class ScraperManager implements IScraperManager {
         
         
 	
-	private String fetchOutput(List<IProductGroup> prdGrp) {
+	public String fetchOutput(List<IProductGroup> prdGrpList) {
 		
-		boolean isJson = true; // TODO ********************
-		IOutputJob job = new OutputJob();  // TODO ********************
+		boolean isJson = true; // TODO ********************  
+		IOutputJob job = new JsonOutputJob();  // TODO ********************    IOutputJob OutputJobFactory
 		String output = "";
-		for (IProductGroup grp : prdGrp) {
+		for (IProductGroup grp : prdGrpList) {
 			output += job.getOutput(grp) + "\n";
 		}
 		
 		return output;
+	}
+	
+	
+	public String doTest() {
+		return "47";
 	}
 	
 	

@@ -3,7 +3,8 @@ import com.sainsburys.model.IProductGroup;
 import java.io.IOException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-public class OutputJob implements IOutputJob {
+
+public class JsonOutputJob implements IOutputJob {
 	
 	public String getOutput(IProductGroup prdGrp) {
 		ObjectMapper mapperObj = new ObjectMapper();
