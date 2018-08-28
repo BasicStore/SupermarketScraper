@@ -7,13 +7,10 @@ import com.sainsburys.model.Product;
 import com.sainsburys.model.ProductGroup;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
-
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -48,12 +45,13 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 		
 		List<AbstractProduct> productList = new ArrayList<AbstractProduct>();
 		HtmlPage page = client.getPage(PRODUCT_GROUP_PAGE_URL);
-		scrapeProductsOnThisPage(client, page, productList);
+		scrapeProducts(client, page, productList); 
 		
 		IProductGroup prdGrp = new ProductGroup();
 		prdGrp.setResults(productList);
 		return prdGrp;
 	}
+	
 	
 	
 	
@@ -64,7 +62,7 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 	 * @param page - the html page  
 	 * @param List<AbstractProduct> - the cumulative product list for all apges, to which products scraped from this page should be added
 	 */
-	public void scrapeProductsOnThisPage(WebClient client, HtmlPage page, List<AbstractProduct> productList) throws ProductScraperException, FailingHttpStatusCodeException, 
+	public void scrapeProducts(WebClient client, HtmlPage page, List<AbstractProduct> productList) throws ProductScraperException, FailingHttpStatusCodeException, 
 																													MalformedURLException, IOException {
 			
 		List<HtmlElement> items = (List<HtmlElement>) page.getByXPath(".//div[@class='productNameAndPromotions']");
@@ -77,8 +75,8 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 
 				// create product
     			String prodName = getProductName(pageContentNode);
-				BigDecimal prodPrice = getProductPrice(pageContentNode);
-				String prodDesc = getDescription(pageContentNode);
+				BigDecimal prodPrice = getProductPrice(pageContentNode, prodName);
+				String prodDesc = getDescription(pageContentNode, prodName);
 				
 				// get calories
 				HtmlElement nutritionTable = (HtmlElement) pageContentNode.getFirstByXPath(".//table[@class='nutritionTable']");	
@@ -86,7 +84,7 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 					productList.add(new CoreProduct(prodName, prodPrice, prodDesc));
 					continue;
 				} else {
-					String prodKCalPer100g = getProductCalories(pageContentNode, nutritionTable); 
+					String prodKCalPer100g = getProductCalories(pageContentNode, nutritionTable, prodName); 
 					productList.add(new Product(prodName, prodPrice, prodDesc, prodKCalPer100g));
 				}
 			}
@@ -95,10 +93,8 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 	
 	
 	
-	private String getProductName(HtmlElement pageContentNode) throws ProductScraperException {
-		
+	protected String getProductName(HtmlElement pageContentNode) throws ProductScraperException {
 		HtmlElement prodNameNode = (HtmlElement) pageContentNode.getFirstByXPath(".//div[@class='productTitleDescriptionContainer']");
-		
 		if (prodNameNode == null || StringUtils.isBlank(prodNameNode.asText())) {
 			throw new ProductScraperException("Product name could not be scraped");
 		}
@@ -107,12 +103,18 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 	}
 	
 	
-	private BigDecimal getProductPrice(HtmlElement pageContentNode) throws ProductScraperException {
+	protected BigDecimal getProductPrice(HtmlElement pageContentNode, String prodName) throws ProductScraperException {
 		
-		String priceLabel = ((HtmlElement) pageContentNode.getFirstByXPath(".//p[@class='pricePerUnit']")).asText();
-		BigDecimal price = CoreProduct.getPrice(priceLabel.substring(0, priceLabel.indexOf("/")));
+		BigDecimal price;
+		try {
+			String priceLabel = ((HtmlElement) pageContentNode.getFirstByXPath(".//p[@class='pricePerUnit']")).asText();
+			price = CoreProduct.getPrice(priceLabel.substring(0, priceLabel.indexOf("/")));
+		} catch(Exception e) {
+			throw new ProductScraperException("Product price could not be scraped for product " + prodName);
+		}
+		
 		if (price == null) {
-			throw new ProductScraperException("Product price could not be scraped");
+			throw new ProductScraperException("Product price could not be scraped for product " + prodName);
 		}
 		
 		return price;
@@ -120,25 +122,28 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 
 	
 	
-	private String getProductCalories(HtmlElement pageContentNode, HtmlElement nutritionTable) throws ProductScraperException {
-		List<HtmlElement> productTextItems = getProductTextItems(pageContentNode);
-		HtmlElement productText = productTextItems.get(1);
-		List<HtmlElement> trItemsTest = (List<HtmlElement>) nutritionTable.getByXPath(".//tbody/tr");
-		if (trItemsTest.size() > 0) {
-			HtmlElement tr1 = trItemsTest.get(1);
-			
-			if (tr1 == null || tr1.getFirstByXPath("td") == null || StringUtils.isBlank(((HtmlElement)tr1.getFirstByXPath("td")).asText())) {
-				throw new ProductScraperException("Prodcut calories could not be scraped");
+	protected String getProductCalories(HtmlElement pageContentNode, HtmlElement nutritionTable, String prodName) throws ProductScraperException {
+		if (nutritionTable != null) {
+			List<HtmlElement> productTextItems = getProductTextItems(pageContentNode);
+			HtmlElement productText = productTextItems.get(1);
+			List<HtmlElement> trItemsTest = (List<HtmlElement>) nutritionTable.getByXPath(".//tbody/tr");
+			if (trItemsTest.size() > 0) {
+				HtmlElement tr1 = trItemsTest.get(1);			
+				if (tr1 == null || tr1.getFirstByXPath("td") == null || StringUtils.isBlank(((HtmlElement)tr1.getFirstByXPath("td")).asText())) {
+					throw new ProductScraperException("Prodcut calories could not be scraped for product " + prodName);
+				}
+				
+				HtmlElement td1 = tr1.getFirstByXPath("td");
+				if (td1 == null || td1.asText() == null) {    //  || td1.asText().indexOf("kcal") < 0
+					throw new ProductScraperException("Product calories could not be scraped for product " + prodName);
+				}
+				
+				return td1.asText();
 			}
-			
-			HtmlElement td1 = tr1.getFirstByXPath("td");
-			String kCalPer100g = td1.asText();
-			return kCalPer100g;
 		}
 		
-		throw new ProductScraperException("Prodcut calories could not be scraped");
+		throw new ProductScraperException("Product calories could not be scraped for product " + prodName);
 	}
-	
 	
 	
 	private HtmlElement getPageContentNode(WebClient client, HtmlElement item) throws ProductScraperException, FailingHttpStatusCodeException, 
@@ -148,7 +153,6 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 		String productUrl = SAINSBURYS_URL_BASE + itemUrl.substring(index);
 		HtmlPage prodPage = client.getPage(productUrl);
 		HtmlElement pageContentNode = (HtmlElement) prodPage.getFirstByXPath(".//div[@class='section productContent']");
-
 		if (pageContentNode == null) {
 			throw new ProductScraperException("Unable to generate page content node");
 		}
@@ -166,7 +170,7 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 		
 	
 	// helper method to get the product description from the given node
-	private static String getDescription(HtmlElement pageContentNode) throws ProductScraperException {		
+	protected static String getDescription(HtmlElement pageContentNode, String prodName) throws ProductScraperException {		
 		HtmlElement descNode = descNode = (HtmlElement) pageContentNode.getFirstByXPath(".//div[@class='itemTypeGroupContainer productText']/div[@class='memo']/p");
 		if (descNode == null) {
 			descNode = (HtmlElement) pageContentNode.getFirstByXPath(".//div[@class='itemTypeGroup']");
@@ -177,8 +181,8 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 			descNode = ((HtmlElement) pageContentNode.getFirstByXPath(".//div[@class='productText']/p"));
 		}
 		
-		if (descNode == null) {
-			throw new ProductScraperException("Product description could not be scraped");
+		if (descNode == null || StringUtils.isBlank(descNode.asText())) {
+			throw new ProductScraperException("Product description could not be scraped for product " + prodName);
 		}
 		
 		return descNode.asText();         

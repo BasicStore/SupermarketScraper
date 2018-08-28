@@ -9,8 +9,12 @@ import com.sainsburys.model.IProductGroup;
 import com.sainsburys.model.ScraperDefinition;
 
 public interface IScraperManager {
-		
+	
+	IProductGroup scrapeProducts(ScraperDefinition scraper) throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException;
+	
 	List<IProductGroup> scrapeProducts() throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException; 
+	
+	String fetchOutput(IProductGroup prdGrp, int outputFormat);
 	
 	String fetchOutput(List<IProductGroup> prdGrpList, int outputFormat);
 		

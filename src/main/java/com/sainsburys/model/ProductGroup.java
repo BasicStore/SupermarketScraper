@@ -1,5 +1,7 @@
 package com.sainsburys.model;
+import com.sainsburys.utils.*;
 import java.util.List;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -19,21 +21,19 @@ public class ProductGroup implements IProductGroup {
 	}
 	
 	
-	private void calculateTotalInfo() {
-		BigDecimal tot = new BigDecimal("0.00");
+	private void calculateTotalInfo() throws IOException {
+		// read property values
+		String currency = SysProperties.getInstance().getProperty("currency");
+		String vat = SysProperties.getInstance().getProperty("vat");
 		
+		// calculate total amount
+		BigDecimal tot = new BigDecimal("0.00");
 		for (AbstractProduct aprd :results) {
 			CoreProduct prod = (CoreProduct)aprd;
-			
-			
-			String priceStr = prod.getUnitPrice();
-			BigDecimal priaceBD = CoreProduct.getPrice(prod.getUnitPrice());
-			
 			tot = tot.add(CoreProduct.getPrice(prod.getUnitPrice()));
 		}
-		
-		String totalStr = Total.CURRENCY + tot.setScale(2).toString();
-		total = new Total(totalStr, Total.VAT);
+
+		total = new Total(currency + tot.setScale(2).toString(), vat);
 	}
 
 	
@@ -42,7 +42,7 @@ public class ProductGroup implements IProductGroup {
 	}
 	
 
-	public void setResults(List<AbstractProduct> results) {
+	public void setResults(List<AbstractProduct> results) throws IOException {
 		this.results = results;
 		calculateTotalInfo();
 	}

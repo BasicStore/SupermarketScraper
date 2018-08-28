@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.sainsburys.exceptions.ProductScraperException;
 import com.sainsburys.model.IProductGroup;
@@ -20,6 +19,16 @@ public class ScraperManager implements IScraperManager {
 
 	public static final int JSON_OUTPUT = 1;
 	public static final int XML_OUTPUT = 2;
+		
+	
+	public IProductGroup scrapeProducts(ScraperDefinition scraper) throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException {  
+		System.out.println("Scraping the products. This will take a few moments.......\n\n");
+		List<IProductGroup> prdGrpList = new ArrayList<IProductGroup>();   
+		IScraperJob job = createScraperJob(scraper);
+		return job.scrapeProducts();
+	}
+	
+	
 	
 	public List<IProductGroup> scrapeProducts() throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException {  
 		System.out.println("Scraping the products. This will take a few moments.......\n\n");
@@ -36,7 +45,7 @@ public class ScraperManager implements IScraperManager {
 	
 	
 	// creates the particular scraper 
-	private IScraperJob createScraperJob(ScraperDefinition def) {
+	protected IScraperJob createScraperJob(ScraperDefinition def) {
 		
 		int scraperId = def.getId();
         String monthString;
@@ -46,8 +55,15 @@ public class ScraperManager implements IScraperManager {
 		
 		return null;
 	}
-        
-        
+	
+	
+	public String fetchOutput(IProductGroup prdGrp, int outputFormat) {
+		
+		IOutputJob job = createOutputJob(outputFormat);
+		return job.getOutput(prdGrp) + "\n";
+	}
+	
+	
 	
 	/**
 	 * Fetches the previously scraped data in the specified format
@@ -67,7 +83,7 @@ public class ScraperManager implements IScraperManager {
 	}
 	
 	
-	private IOutputJob createOutputJob(int outputFormat) {
+	protected IOutputJob createOutputJob(int outputFormat) {
 		
 		switch (outputFormat) {
         	case JSON_OUTPUT:  return new JsonOutputJob();     

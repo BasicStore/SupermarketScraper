@@ -1,10 +1,7 @@
 package com.sainsburys.client;
-import java.math.BigDecimal;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.sainsburys.model.IProductGroup;
+import com.sainsburys.model.ScraperDefinition;
 import com.sainsburys.services.IScraperManager;
 import com.sainsburys.services.ScraperManager;
 
@@ -23,8 +20,8 @@ public class ApplicationMain {
 		IScraperManager scraper  = new ScraperManager(); 
 		
 		try {
-			List<IProductGroup> prdGrpList = scraper.scrapeProducts();
-			String output = scraper.fetchOutput(prdGrpList, ScraperManager.JSON_OUTPUT);
+			IProductGroup prdGrp = scraper.scrapeProducts(ScraperDefinition.BERRIES_CHERRIES_CURRANTS);
+			String output = scraper.fetchOutput(prdGrp, ScraperManager.JSON_OUTPUT);
 			System.out.println("JSON OUTPUT:\n\n" + output);
 		} catch(Exception e) {
 			System.out.println("Error scraping page: " + e.getMessage() + "\n");

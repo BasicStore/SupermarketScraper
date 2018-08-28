@@ -1,4 +1,5 @@
 package com.sainsburys.model;
+import java.io.IOException;
 import java.util.List;
 import com.sainsburys.model.Total;
 
@@ -12,6 +13,6 @@ public interface IProductGroup {
 
 	Total getTotal();
 
-	void setResults(List<AbstractProduct> results);
+	void setResults(List<AbstractProduct> results) throws IOException;
 	
 }

@@ -33,10 +33,14 @@ public class CoreProduct extends AbstractProduct {
 	public static BigDecimal getPrice(String priceStr) {
 		
 		if (StringUtils.isBlank(priceStr)) {
-			return new BigDecimal("0.00");
+			return null;
 		}
 		
-		return new BigDecimal(priceStr.substring(1)).setScale(2);
+		try {
+			return new BigDecimal(priceStr.substring(1)).setScale(2);
+		} catch(NumberFormatException e) {
+			return null;
+		}		
 	}
     
 	
