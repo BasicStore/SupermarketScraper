@@ -1,17 +1,14 @@
 package com.sainsburys.model;
 import org.junit.Test;
-
-import com.sainsburys.utils.SysProperties;
-
 import static org.junit.Assert.*;
-
+import com.sainsburys.utils.SysProperties;
 import java.io.IOException;
 import java.math.BigDecimal;
-
 import org.apache.commons.lang3.StringUtils;
 
 
 /**
+ * Class to test methods within the com.sainsburys.model.CoreProduct class
  * @author Paul
  *
  */

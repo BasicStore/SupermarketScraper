@@ -1,6 +1,5 @@
 package com.sainsburys.model;
 
-import com.sainsburys.scraper.IScraperJob;
 
 /**
  * Enum to define different types of scraping

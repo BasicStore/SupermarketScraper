@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.Properties;
 
 
+/**
+ * A singleton class to provide read access to the src/main/resources/config.properties resource file
+ * @author Paul
+ */
 public class SysProperties {
 
 	// object to hold the singleton instance of this class

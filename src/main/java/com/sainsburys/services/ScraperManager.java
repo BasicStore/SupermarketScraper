@@ -21,6 +21,12 @@ public class ScraperManager implements IScraperManager {
 	public static final int XML_OUTPUT = 2;
 		
 	
+	/**
+	 * Applies the given scraper type to a supermarket web page and converts the relevant product 
+	 * information to an IProductGroup java object
+	 * @param scraper - the type of scraper
+	 * @return IProductGroup - the group of products and related data   
+	 */
 	public IProductGroup scrapeProducts(ScraperDefinition scraper) throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException {  
 		System.out.println("Scraping the products. This will take a few moments.......\n\n");
 		List<IProductGroup> prdGrpList = new ArrayList<IProductGroup>();   
@@ -30,11 +36,15 @@ public class ScraperManager implements IScraperManager {
 	
 	
 	
+	/**
+	 * Applies all the scrapers defined in com.sainsburys.model.ScraperDefinition for supermarket web page(s), 
+	 * and converts the resulting product information into a list if IProductGroup java objects
+	 * @return List<IProductGroup> - the group of products and related data   
+	 */
 	public List<IProductGroup> scrapeProducts() throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException {  
 		System.out.println("Scraping the products. This will take a few moments.......\n\n");
 		List<IProductGroup> prdGrpList = new ArrayList<IProductGroup>();   
 		for (ScraperDefinition def : ScraperDefinition.values()) {
-			
 			IScraperJob job = createScraperJob(def);
 			IProductGroup prdGrp = job.scrapeProducts();
 			prdGrpList.add(prdGrp);

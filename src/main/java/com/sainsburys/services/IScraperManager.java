@@ -2,7 +2,6 @@ package com.sainsburys.services;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
-
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.sainsburys.exceptions.ProductScraperException;
 import com.sainsburys.model.IProductGroup;

@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Class to test methods within the com.sainsburys.model.ProductGroup class 
+ * @author Paul
+ *
+ */
 public class ProductGroupTest {
 
 	@Test

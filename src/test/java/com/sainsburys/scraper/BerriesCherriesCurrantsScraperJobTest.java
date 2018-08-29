@@ -16,6 +16,11 @@ import com.sainsburys.model.AbstractProduct;
 import com.sainsburys.model.Product;
 
 
+/**
+ * Class to test methods in the com.sainsburys.scraper.BerriesCherriesCurrantsScraperJob class
+ * @author Paul
+ *
+ */
 public class BerriesCherriesCurrantsScraperJobTest {
 	
 	

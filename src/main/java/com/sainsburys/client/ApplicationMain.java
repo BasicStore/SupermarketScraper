@@ -1,5 +1,4 @@
 package com.sainsburys.client;
-import java.util.List;
 import com.sainsburys.model.IProductGroup;
 import com.sainsburys.model.ScraperDefinition;
 import com.sainsburys.services.IScraperManager;

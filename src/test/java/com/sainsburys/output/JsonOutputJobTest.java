@@ -4,17 +4,16 @@ import com.sainsburys.model.AbstractProduct;
 import com.sainsburys.model.IProductGroup;
 import com.sainsburys.model.Product;
 import com.sainsburys.model.ProductGroup;
-import com.sainsburys.model.ScraperDefinition;
-import com.sainsburys.scraper.BerriesCherriesCurrantsScraperJob;
-import com.sainsburys.services.ScraperManager;
-import org.junit.Test;
 import static org.junit.Assert.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class to test methods in the com.sainsburys.output.JsonOutputJob class  
+ * @author Paul
+ */
 public class JsonOutputJobTest {	
 
 	@Test
