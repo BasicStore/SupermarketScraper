@@ -18,7 +18,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 /**
- * A scraper to read the Berries, cherries & currants
+ * A scraper to read the Berries, cherries and currants
  * @author Paul
  */
 public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
@@ -36,6 +36,10 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 	/** TODO NOT IMPLEMENTED FULLY
 	 * Gets a list of all the products listed on this URL, including products on subpages where
 	 * they are listed on more than 1 page
+	 * @throws ProductScraperException - thrown when a product could not be scraped
+	 * @throws FailingHttpStatusCodeException - thrown if the scraper encounters an error locating the page
+	 * @throws MalformedURLException - thrown if the scraper cannot find the desired page
+	 * @throws IOException - thrown by the scraper if there is some problem downloading the remote data
 	 * @return IProductGroup - the product group
 	 */
 	public IProductGroup scrapeProducts() throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException {
@@ -56,11 +60,14 @@ public class BerriesCherriesCurrantsScraperJob implements IScraperJob {
 	
 	
 	/**
-	 * Scrapes a supermarket product webpage and loads product information into
-	 * a product group java object.
+	 * Scrapes a supermarket product webpage and loads product information into the given product list
 	 * @param client - the scraper client object
 	 * @param page - the html page  
-	 * @param List<AbstractProduct> - the cumulative product list for all apges, to which products scraped from this page should be added
+	 * @param productList - the cumulative product list for all pages, to which products scraped from this page should be added
+	 * @throws ProductScraperException - thrown when a product could not be scraped
+	 * @throws FailingHttpStatusCodeException - thrown if the scraper encounters an error locating the page
+	 * @throws MalformedURLException - thrown if the scraper cannot find the desired page
+	 * @throws IOException - thrown by the scraper if there is some problem downloading the remote data
 	 */
 	public void scrapeProducts(WebClient client, HtmlPage page, List<AbstractProduct> productList) throws ProductScraperException, FailingHttpStatusCodeException, 
 																													MalformedURLException, IOException {

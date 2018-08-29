@@ -39,7 +39,7 @@ public class ScraperManager implements IScraperManager {
 	/**
 	 * Applies all the scrapers defined in com.sainsburys.model.ScraperDefinition for supermarket web page(s), 
 	 * and converts the resulting product information into a list if IProductGroup java objects
-	 * @return List<IProductGroup> - the group of products and related data   
+	 * @return List - the group of products and related data   
 	 */
 	public List<IProductGroup> scrapeProducts() throws ProductScraperException, FailingHttpStatusCodeException, MalformedURLException, IOException {  
 		System.out.println("Scraping the products. This will take a few moments.......\n\n");
@@ -77,9 +77,9 @@ public class ScraperManager implements IScraperManager {
 	
 	/**
 	 * Fetches the previously scraped data in the specified format
-	 * @param prdGrpList
+	 * @param prdGrpList - the list of product groups
 	 * @param outputFormat - the output string format, such as JSON or XML
-	 * @return
+	 * @return String - the output data as a String 
 	 */
 	public String fetchOutput(List<IProductGroup> prdGrpList, int outputFormat) {
 		
